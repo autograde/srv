@@ -1,0 +1,103 @@
+{{define "PageTitle"}}{{.SysName}} - System Setup{{end}}
+{{define "Headline"}}Admin Panel{{end}}
+{{define "Subtext"}}System configuration{{end}}
+{{define "body"}}
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+
+				<p>
+					The first time you start {{.SysName}} you will need to supply a few details
+					about your host environment, the administrator, and the git repository hosting
+					environment. Currently, only GitHub is supported.
+				</p>
+
+				<p>
+					Before you can start you will need to register the {{.SysName}} application
+					at GitHub; you will need to do this from the administrator account.
+				</p>
+
+				<p>
+					<ul>
+						<li>Add <a href="https://github.com/settings/applications/new">New Application</a></li>
+						<li>Enter the information requested
+							<ul>Application name: e.g. "{{.SysName}} at University of Stavanger"</ul>
+							<ul>Homepage URL: e.g. "http://{{.SysNameLC}}.ux.uis.no"</ul>
+							<ul>Authorization callback URL: e.g. "http://{{.SysNameLC}}.ux.uis.no/oauth"</ul>
+						</li>
+					</ul>
+			 	</p>
+
+			 <p>
+					Note that, the Homepage URL must be a fully qualified URL, including http://.
+					This must be the hostname (or an alias) of server running the '{{.SysNameLC}}'
+					program. This server must have a public IP address, since GitHub will make calls
+					to this server to support {{.SysName}}'s functionality. Further, {{.SysName}}
+					requires that the Authorization callback URL is the same as the Homepage URL
+					with the added "/oauth" path.
+				</p>
+
+				<p>
+					Once you have completed the above steps, the Client ID and Client Secret will be
+					available from the GitHub web interface. Simply copy each of these OAuth tokens
+					and paste them into the configuration file, or on the command line when starting
+					{{.SysName}} for the first time. You will not need to repeat this process
+					when starting {{.SysName}} in the future.
+				</p>
+
+				<p>
+					If you need to obtain the OAuth tokens at a later time, e.g. if you have deleted
+					the configuration file, go to: https://github.com/settings/developers and
+					select your Application to be able to view the OAuth tokens again.
+				</p>
+
+				<!-- input form -->
+				<form class="form-horizontal" role="form" action="{{.SaveConfigPath}}" method="POST">
+
+					<div class="form-group">
+						<label for="HomePageURL" class="col-sm-3 control-label">Home Page URL *</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" required autofocus pattern="https?://.+" title="Include http://" name="{{.HomePage}}" placeholder="{{.HomePageURL}}">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="admin" class="col-sm-3 control-label">Administrator *</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" required name="{{.Admin}}" placeholder="uis-agbot">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="clientID" class="col-sm-3 control-label">Client ID *</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" required name="{{.ClientID}}" placeholder="GitHub Client ID">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="clientSecret" class="col-sm-3 control-label">Client Secret *</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" required name="{{.ClientSecret}}" placeholder="GitHub Client Secret">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="storageLoc" class="col-sm-3 control-label">Storage Location *</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" required name="{{.StorageLoc}}" value="{{.StoragePath}}">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-offset-3 col-sm-9">
+							<button type="submit" class="btn btn-default">Save Configuration</button>
+						</div>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+{{end}}
